@@ -1,0 +1,49 @@
+﻿@model Game
+
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<div class="container mt-4 mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="neon-text fw-bold mb-0">@Model.Name</h1>
+        <a class="btn btn-secondary gaming-btn" asp-action="Index">
+            <i class="bi bi-arrow-left icon-spaced"></i>Back to Games
+        </a>
+    </div>
+
+    <div class="gaming-card overflow-hidden">
+        <div class="row g-0">
+            <div class="col-md-8 p-4 d-flex flex-column justify-content-between">
+                <div>
+                    <div class="mb-4">
+                        <span class="badge-gaming">@Model.Category?.Name</span>
+                    </div>
+                    <p class="text-secondary fs-5 mb-4">@Model.Description</p>
+                </div>
+
+                <div class="device-icons-container">
+                    <h6 class="text-primary mb-3">
+                        <i class="bi bi-controller icon-spaced"></i>Available Platforms:
+                    </h6>
+                    <div class="device-icons">
+                        @foreach (var gameDevice in Model.Devices)
+                        {
+                            <div class="device-icon-wrapper">
+                                <i class="@gameDevice.Device.Icon device-icon"></i>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                
+            </div>
+
+            <div class="col-md-4 position-relative">
+                <div class="game-cover-large" style="background-image: url(@($"{FileSettings.ImagesPath}/{Model.Cover}"));">
+                    <div class="game-overlay-detail"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

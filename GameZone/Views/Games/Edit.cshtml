@@ -1,0 +1,89 @@
+﻿@model EditGameFormViewModel
+
+@{
+    ViewData["Title"] = "Edit Game";
+}
+
+<div class="container mt-4 mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="neon-text fw-bold mb-0">@Model.Name</h1>
+        <a class="btn btn-secondary gaming-btn" asp-action="Index">
+            <i class="bi bi-arrow-left icon-spaced"></i>Back to Games
+        </a>
+    </div>
+    <div class="gaming-card p-4">
+        
+
+        <form asp-controller="Games" enctype="multipart/form-data" class="gaming-form">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group mb-4">
+                        <label asp-for="Name" class="form-label text-primary fw-bold"></label>
+                        <input asp-for="Name" class="form-control gaming-input" type="text" placeholder="Enter game name">
+                        <span asp-validation-for="Name" class="text-danger validation-message"></span>
+                    </div>
+
+                    <div class="form-group mb-4">
+                        <label asp-for="CategoryId" class="form-label text-primary fw-bold"></label>
+                        <select asp-for="CategoryId" asp-items="Model.Categories" class="form-select gaming-select" data-placeholder="Select a category" data-minimum-results-for-search="Infinity">
+                            <option value="">Choose Category</option>
+                        </select>
+                        <span asp-validation-for="CategoryId" class="text-danger validation-message"></span>
+                    </div>
+
+                    <div class="form-group mb-4">
+                        <label asp-for="SelectedDevices" class="form-label text-primary fw-bold"></label>
+                        <select asp-for="SelectedDevices" asp-items="Model.Devices" class="form-select gaming-select" data-placeholder="Select supported devices" multiple>
+                            <option value="">Choose Devices</option>
+                        </select>
+                        <span asp-validation-for="SelectedDevices" class="text-danger validation-message"></span>
+                    </div>
+
+                    <div class="form-group mb-4">
+                        <label asp-for="Description" class="form-label text-primary fw-bold"></label>
+                        <textarea asp-for="Description" class="form-control gaming-input" placeholder="Enter game description" rows="4"></textarea>
+                        <span asp-validation-for="Description" class="text-danger validation-message"></span>
+                    </div>
+
+                    <div class="form-group mb-4">
+                        <label class="form-label text-primary fw-bold" asp-for="Cover"></label>
+                        <input type="file" class="form-control gaming-input" asp-for="Cover"
+                               data-rule-extension="@FileSettings.AllowedExtensions.Replace(".", string.Empty)"
+                               data-msg-extension="The only allowed extensions are @FileSettings.AllowedExtensions"
+                               data-rule-filesize="@FileSettings.MaxFileInByte"
+                               data-msg-filesize="Maximum allowed size is @(FileSettings.MaxFileInMB)MB">
+                        <small class="form-text text-muted mt-2">
+                            <i class="bi bi-info-circle me-1"></i>
+                            Only @FileSettings.AllowedExtensions files are allowed with max. size @(FileSettings.MaxFileInMB)MB.
+                        </small>
+                        <span asp-validation-for="Cover" class="text-danger validation-message d-block"></span>
+                    </div>
+
+                    <div class="d-flex" style="gap: 2rem;">
+                        <button class="btn btn-primary gaming-btn" type="submit">
+                            <i class="bi bi-save icon-spaced"></i>Update Game
+                        </button>
+                        <a class="btn btn-outline-secondary gaming-btn" asp-action="Index">
+                            <i class="bi bi-x-circle icon-spaced"></i>Cancel
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-md-6 d-flex flex-column align-items-center justify-content-center">
+                    <div class="preview-container">
+                        <img class="cover-preview gaming-card" alt="Current Cover" src="@($"{FileSettings.ImagesPath}/{Model.CurrentCover}")" />
+                        <div class="mt-3 text-center">
+                            <small class="text-muted">Current cover image</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/filesize-validator.js" asp-append-version="true"></script>
+    <script src="~/js/game-form.js" asp-append-version="true"></script>
+}
